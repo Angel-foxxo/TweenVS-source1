@@ -3,9 +3,9 @@
  * terms of the MIT license.
  *
  * You should have received a copy of the LICENSE file with
- * this file. If not, please write to: angelcazacu8@gmail.com or visit : github.com/Angel-foxxo/TweenVS
+ * this file. If not, please write to: angelcazacu8@gmail.com or visit : github.com/Angel-foxxo/TweenVS-source1
 */
-local VERSION = "1.0.0";
+local VERSION = "1.0.1";
 
 if("TweenVS" in getroottable())
 {
@@ -39,7 +39,7 @@ TweenVS.Tweens <- [];
 /*
     Main Tween Class
 */
-TweenVS.Tween <- class 
+TweenVS.Tween <- class
 {
     _target = null;
     _type = null;
@@ -124,16 +124,16 @@ TweenVS.Tween <- class
     //get the target to interpolate, the target can be either an entity or a basic type
     function from(target, property = null, dir = 1)
     {
-        //set what property we are modifying 
+        //set what property we are modifying
         switch(property)
         {
-            case TweenVS.EntProps.pos: 
+            case TweenVS.EntProps.pos:
             {
                 _type = TweenVS.EntProps.pos;
-            
+
             }; break;
 
-            case TweenVS.EntProps.ang: 
+            case TweenVS.EntProps.ang:
             {
                 _type = TweenVS.EntProps.ang;
                 if(dir != 0 && dir != 1 && dir != -1)
@@ -159,8 +159,8 @@ TweenVS.Tween <- class
                 }
 
             }; break;
-        }  
-        
+        }
+
         //is it an entity?
         if(typeof target == "instance")
         {
@@ -169,28 +169,28 @@ TweenVS.Tween <- class
             {
                 if(property == null)
                 {
-                    throw("TweenVS: get() target is an entity but no entity propery is specified!");
+                    throw("TweenVS: from() target is an entity but no entity propery is specified!");
                 }
                 //check if propery is valid
                 if(!(property in TweenVS.EntProps))
                 {
-                    throw("TweenVS: get() target is an entity but the entity property is invalid!");
+                    throw("TweenVS: from() target is an entity but the entity property is invalid!");
                 }
                 //set the property
                 switch(_type)
                 {
-                    case TweenVS.EntProps.pos: 
+                    case TweenVS.EntProps.pos:
                     {
                         _initVal = target.GetOrigin();
-                    
+
                     }; break;
 
-                    case TweenVS.EntProps.ang: 
+                    case TweenVS.EntProps.ang:
                     {
                         _initVal = target.GetAngles();
 
                     }; break;
-                }  
+                }
                 _target = target;
                 _property = property;
             }
@@ -198,7 +198,7 @@ TweenVS.Tween <- class
         }
         //not an entity, perhaps a type?
         else if(typeof target in TweenVS.ValTypes)
-        {  
+        {
             //if(property != null)
             //{
             //    throw("TweenVS: only entities use the property field!");
@@ -212,7 +212,7 @@ TweenVS.Tween <- class
         {
             throw("TweenVS: get() target is invalid!");
         }
-        
+
         return this;
     }
 
@@ -238,16 +238,16 @@ TweenVS.Tween <- class
         {
             throw("TweenVS: tween duration is invalid!");
         }
-        
+
         _endVal = value;
         _duration = duration;
 
         return this;
     }
 
-    //only for entities, makes the tween local to the entity 
+    //only for entities, makes the tween local to the entity
     function toLocal(value, duration = 1, localLoop = false)
-    {       
+    {
         if(_initVal == null)
         {
             throw("TweenVS: start value doesn't exist! did you run from() first?");
@@ -303,8 +303,8 @@ TweenVS.Tween <- class
         }
         return this
     }
-    
-    //add a callback function 
+
+    //add a callback function
     function on(type, func)
     {
         if(!(type in TweenVS.Callbacks))
@@ -313,7 +313,7 @@ TweenVS.Tween <- class
         }
 
         local env = getstackinfos(2).locals["this"];
-        
+
         switch(type)
         {
             case TweenVS.Callbacks.update: { _callbackUpdateList.push([func, env]); }; break;
@@ -321,13 +321,13 @@ TweenVS.Tween <- class
             case TweenVS.Callbacks.start: { _callbackStartList.push([func, env]); }; break;
             case TweenVS.Callbacks.everyStart: { _callbackEveryStartList.push([func, env]); }; break;
             case TweenVS.Callbacks.stop: { _callbackStopList.push([func, env]); }; break;
-        }  
+        }
 
         return this
     }
 
     //pauses the tweening, passing a number in seconds makes it act as a delay
-    //otherwise it pauses forever 
+    //otherwise it pauses forever
     function pause(time = null)
     {
         if(_paused == true)
@@ -337,7 +337,7 @@ TweenVS.Tween <- class
         _pausedTime = Time();
         _running = false;
         _paused = true;
-      
+
         if(time != null)
         {
             if(typeof time != "integer" && typeof time != "float")
@@ -350,7 +350,7 @@ TweenVS.Tween <- class
 
         return this
     }
-    
+
     //unpauses a tween, does nothing if its not paused
     function unpause()
     {
@@ -373,7 +373,7 @@ TweenVS.Tween <- class
         return this
     }
 
-        //loops the tween, loopCount of -1 is infinite looping
+    //loops the tween, loopCount of -1 is infinite looping
     function loop(loopCount = null)
     {
         if(typeof loopCount != "integer" && typeof loopCount != "float" && loopCount != null)
@@ -440,7 +440,7 @@ TweenVS.Tween <- class
         return this
     }
 
-    //inverts the tween, this does not modify the _initVal and _endVal variables like bounce() 
+    //inverts the tween, this does not modify the _initVal and _endVal variables like bounce()
     //but is instead done by inverting the t value used to interpolate
     function invert(val = true)
     {
@@ -449,7 +449,7 @@ TweenVS.Tween <- class
             throw("TweenVS: invert() has an invalid parameter!");
         }
         _inverted = val;
-        
+
         return this
     }
 
@@ -461,15 +461,14 @@ TweenVS.Tween <- class
             throw("TweenVS: snap() has an invalid parameter!");
         }
         _snap = val;
-        
+
         return this
     }
 
-    //read more in the function, this shit does too much
-    //stuff to write it all here
+    //read more in the function, this shit does too much stuff to write it all here
     function update()
     {
-        
+
         if(_delay != null)
         {
             if(Time() - _delayTime <  _delay)
@@ -487,7 +486,7 @@ TweenVS.Tween <- class
         {
             return
         }
-        
+
         _timeElapsed = Time() - _initTime;
 
         //horrible hack to fix the tween not starting from the initial value on loops due to execution order
@@ -514,7 +513,7 @@ TweenVS.Tween <- class
             {
                 t = (t * -1) + 1;
             }
-            
+
             if(t > 1)
             {
                 t = 1
@@ -535,7 +534,7 @@ TweenVS.Tween <- class
             {
                 _resultVal = TweenVS.Lerp(_initVal, _endVal, t);
             }
-            
+
             if(_timeElapsed == 0)
             {
                 foreach (callback in _callbackEveryStartList)
@@ -592,12 +591,12 @@ TweenVS.Tween <- class
                 {
                     //using the native vscript function to set the data disables interpolation
                     //so its used on the first update call to "snap" the animation then the data
-                    //is set directly so the engine can interpolate the entity, this allows the 
-                    //tween to look smooth even when host_timescale is set to a low value 
-                    //it can be toggles using snap() since in some cases this behavior may 
+                    //is set directly so the engine can interpolate the entity, this allows the
+                    //tween to look smooth even when host_timescale is set to a low value
+                    //it can be toggles using snap() since in some cases this behavior may
                     //not be disireable
-                    case TweenVS.EntProps.pos: 
-                    {   
+                    case TweenVS.EntProps.pos:
+                    {
                         if(_timeElapsed == 1 && _snap)
                         {
                             _target.SetOrigin(_resultVal);
@@ -609,9 +608,9 @@ TweenVS.Tween <- class
 
                     }; break;
 
-                    case TweenVS.EntProps.ang: 
+                    case TweenVS.EntProps.ang:
                     {
-                        
+
                         if(_timeElapsed == 1 && _snap)
                         {
                             _target.SetAngles(_resultVal.x, _resultVal.y, _resultVal.z);
@@ -625,17 +624,17 @@ TweenVS.Tween <- class
                             }
                             _target.__KeyValueFromVector("angles", _resultVal);
                         }
-                    
+
                     }; break;
-                }  
+                }
             }
         }
         //not an entity, perhaps a type?
         else if(typeof _target in TweenVS.ValTypes)
-        {  
+        {
             _target = _resultVal;
         }
-        
+
         foreach (callback in _callbackUpdateList)
         {
             if(typeof callback[0] != "function")
@@ -645,7 +644,7 @@ TweenVS.Tween <- class
             }
             callback[0].call(callback[1], _resultVal);
         }
-        
+
         if(_runCount == 0 && _timeElapsed == 0)
         {
             foreach (callback in _callbackStartList)
@@ -1006,16 +1005,16 @@ TweenVS.EaseOutBounce <- function(t)
     if (t < 1.0 / d1)
     {
         return n1 * t * t;
-    } 
+    }
     else if (t < 2.0 / d1)
     {
         return n1 * (t -= 1.5 / d1) * t + 0.75;
-    } 
+    }
     else if (t < 2.5 / d1)
     {
         return n1 * (t -= 2.25 / d1) * t + 0.9375;
     }
-    else 
+    else
     {
         return n1 * (t -= 2.625 / d1) * t + 0.984375;
     }
@@ -1084,11 +1083,11 @@ TweenVS.EasingFunctions <-
 -SOFTWARE.
 */
 const DEG2RAD			= 0.017453293;;			// PI / 180 = 0.01745329251994329576
-const RAD2DEG			= 57.295779513;; 
+const RAD2DEG			= 57.295779513;;
 const PIDIV2			= 1.570796327;;			// 1.57079632679489661923
 
 TweenVS.QuaternionSlerpNoAlign <- function(p, q, t)
-{   
+{
 	local sclp, sclq;
     local qt = TweenVS.Quaternion()
 	// QuaternionDotProduct
